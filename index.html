@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Corn Farm Adventure</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="styles.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="game-container">
+        <header>
+            <h1>Corn Farm Adventure 🌽</h1>
+        </header>
+
+        <main>
+            <div id="game">
+                <!-- Status Section -->
+                <div id="status">
+                    <div class="status-item">
+                        <img src="images/money_icon.png" alt="Money">
+                        <p>$<span id="money">45</span></p>
+                    </div>
+                    <div class="status-item">
+                        <img src="images/seeds_icon.png" alt="Seeds">
+                        <p><span id="seeds">0</span>/<span id="storage">9</span></p>
+                    </div>
+                    <div class="status-item">
+                        <img src="images/crops_icon.png" alt="Crops">
+                        <p><span id="crops">0</span></p>
+                    </div>
+                    <div class="status-item">
+                        <img src="images/houses_icon.png" alt="Houses">
+                        <p><span id="houses">0</span></p>
+                    </div>
+                    <div class="status-item">
+                        <img src="images/tractors_icon.png" alt="Tractors">
+                        <p><span id="tractors">0</span></p>
+                    </div>
+                    <div class="status-item">
+                        <img src="images/loan_status_icon.png" alt="Loan">
+                        <p>$<span id="loan">0</span></p>
+                    </div>
+                </div>
+
+                <!-- Message Box -->
+                <div id="message-box">
+                    <p id="message">Welcome to your corn farm!</p>
+                </div>
+
+                <!-- Actions Section -->
+                <div id="actions">
+                    <button id="buySeed">
+            <img src="images/seed_icon.png" alt="Buy Seed"><br>
+            Buy Seed<br>($10)
+          </button>
+                    <button id="plantSeed">
+            <img src="images/plant_icon.png" alt="Plant Seed"><br>
+            Plant Seed
+          </button>
+                    <button id="harvestCrops">
+            <img src="images/harvest_icon.png" alt="Harvest Crops"><br>
+            Harvest
+          </button>
+                    <button id="sellCrops">
+            <img src="images/sell_icon.png" alt="Sell Crops"><br>
+            Sell Crops<br>($30 each)
+          </button>
+                    <button id="buyStorage">
+            <img src="images/storage_icon.png" alt="Buy Storage"><br>
+            More Storage<br>($100)
+          </button>
+                    <button id="buyHouse">
+            <img src="images/house_icon.png" alt="Buy House"><br>
+            Buy House<br>($1000)
+          </button>
+                    <button id="buyTractor">
+            <img src="images/tractor_icon.png" alt="Buy Tractor"><br>
+            Buy Tractor<br>($4000)
+          </button>
+                    <button id="takeLoan">
+            <img src="images/loan_icon.png" alt="Take Loan"><br>
+            Take Loan<br>($500)
+          </button>
+                    <button id="repayLoan">
+            <img src="images/repay_icon.png" alt="Repay Loan"><br>
+            Repay Loan
+          </button>
+                    <button id="decorateHouse" disabled>
+            <img src="images/decorate_icon.png" alt="Decorate House"><br>
+            Decorate House
+          </button>
+                    <button id="resetGame">
+            <img src="images/reset_icon.png" alt="Reset Game"><br>
+            Reset Game
+          </button>
+                </div>
+            </div>
+
+            <!-- House Decoration Modal -->
+            <!-- Include your decoration modal here if you've added it previously -->
+        </main>
+
+        <footer>
+            <p>@Drawing Engine inc.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
