@@ -17,18 +17,21 @@ const tractorsEl = document.getElementById('tractors');
 const loanEl = document.getElementById('loan');
 const messageEl = document.getElementById('message');
 
-// Action Buttons
+// Action Buttons and Inputs
 const buySeedBtn = document.getElementById('buySeed');
+const seedAmountInput = document.getElementById('seedAmount'); // New Input
 const plantSeedBtn = document.getElementById('plantSeed');
 const harvestCropsBtn = document.getElementById('harvestCrops');
 const sellCropsBtn = document.getElementById('sellCrops');
 const buyStorageBtn = document.getElementById('buyStorage');
 const buyHouseBtn = document.getElementById('buyHouse');
+const sellHouseBtn = document.getElementById('sellHouse');
 const buyTractorBtn = document.getElementById('buyTractor');
+const sellTractorBtn = document.getElementById('sellTractor');
 const takeLoanBtn = document.getElementById('takeLoan');
 const repayLoanBtn = document.getElementById('repayLoan');
-const decorateHouseBtn = document.getElementById('decorateHouse');
 const resetGameBtn = document.getElementById('resetGame');
+const plantAllSeedsBtn = document.getElementById('plantAllSeeds'); // New Button
 
 // Event Listeners
 buySeedBtn.addEventListener('click', buySeed);
@@ -37,11 +40,13 @@ harvestCropsBtn.addEventListener('click', harvestCrops);
 sellCropsBtn.addEventListener('click', sellCrops);
 buyStorageBtn.addEventListener('click', buyStorage);
 buyHouseBtn.addEventListener('click', buyHouse);
+sellHouseBtn.addEventListener('click', sellHouse);
 buyTractorBtn.addEventListener('click', buyTractor);
+sellTractorBtn.addEventListener('click', sellTractor);
 takeLoanBtn.addEventListener('click', takeLoan);
 repayLoanBtn.addEventListener('click', repayLoan);
-decorateHouseBtn.addEventListener('click', openDecorationModal);
 resetGameBtn.addEventListener('click', resetGame);
+plantAllSeedsBtn.addEventListener('click', plantAllSeeds); // New Event Listener
 
 // Functions
 function updateDisplay() {
@@ -52,20 +57,24 @@ function updateDisplay() {
     housesEl.textContent = houses;
     tractorsEl.textContent = tractors;
     loanEl.textContent = loan;
-
-    // Enable Decorate House button if player owns at least one house
-    decorateHouseBtn.disabled = houses === 0;
 }
 
 function buySeed() {
-    if (money >= 10 && seeds < storage) {
-        money -= 10;
-        seeds += 1;
-        messageEl.textContent = 'You bought a corn seed!';
-    } else if (seeds >= storage) {
-        messageEl.textContent = 'Your storage is full. Buy more storage to hold more seeds.';
+    const seedAmount = parseInt(seedAmountInput.value);
+
+    if (seedAmount && seedAmount > 0) {
+        const cost = seedAmount * 10;
+        if (money >= cost && seeds + seedAmount <= storage) {
+            money -= cost;
+            seeds += seedAmount;
+            messageEl.textContent = `You bought ${seedAmount} corn seeds!`;
+        } else if (seeds + seedAmount > storage) {
+            messageEl.textContent = 'Your storage is full. Buy more storage to hold more seeds.';
+        } else {
+            messageEl.textContent = 'You need more money to buy seeds.';
+        }
     } else {
-        messageEl.textContent = 'You need more money to buy seeds.';
+        messageEl.textContent = 'Please enter a valid seed amount.';
     }
     updateDisplay();
 }
@@ -81,9 +90,21 @@ function plantSeed() {
     updateDisplay();
 }
 
+function plantAllSeeds() {
+    if (seeds > 0) {
+        crops += seeds;
+        seeds = 0;
+        messageEl.textContent = 'You planted all your seeds. A field of corn is sprouting!';
+    } else {
+        messageEl.textContent = 'You have no seeds to plant.';
+    }
+    updateDisplay();
+}
+
 function harvestCrops() {
     if (crops > 0) {
         messageEl.textContent = 'You harvested your crops!';
+        // Additional logic for harvesting can be added here
     } else {
         messageEl.textContent = 'No crops to harvest.';
     }
@@ -117,9 +138,20 @@ function buyHouse() {
     if (money >= 1000) {
         money -= 1000;
         houses += 1;
-        messageEl.textContent = 'You bought a house! Time to decorate.';
+        messageEl.textContent = 'You bought a house!';
     } else {
         messageEl.textContent = 'You need more money to buy a house.';
+    }
+    updateDisplay();
+}
+
+function sellHouse() {
+    if (houses > 0) {
+        money += 800;
+        houses -= 1;
+        messageEl.textContent = 'You sold a house!';
+    } else {
+        messageEl.textContent = 'No houses to sell.';
     }
     updateDisplay();
 }
@@ -135,28 +167,45 @@ function buyTractor() {
     updateDisplay();
 }
 
-function takeLoan() {
-    if (loan === 0 && money === 0) {
-        loan += 500;
-        money += 500;
-        messageEl.textContent = 'You took a loan of $500.';
-    } else if (loan > 0) {
-        messageEl.textContent = 'You need to repay your existing loan first.';
+function sellTractor() {
+    if (tractors > 0) {
+        money += 3200;
+        tractors -= 1;
+        messageEl.textContent = 'You sold a tractor!';
     } else {
-        messageEl.textContent = 'You can only take a loan when you have no money.';
+        messageEl.textContent = 'No tractors to sell.';
+    }
+    updateDisplay();
+}
+
+function takeLoan() {
+    const loanAmount = parseInt(document.getElementById('loanAmount').value);
+
+    if (loanAmount && loanAmount > 0 && loan === 0) {
+        loan += loanAmount;
+        money += loanAmount;
+        messageEl.textContent = `You took a loan of $${loanAmount}.`;
+    } else if (loan > 0) {
+        messageEl.textContent = 'You already have an outstanding loan. Repay it first before taking a new one.';
+    } else {
+        messageEl.textContent = 'Please enter a valid loan amount.';
     }
     updateDisplay();
 }
 
 function repayLoan() {
-    if (loan > 0 && money >= loan) {
-        money -= loan;
-        loan = 0;
-        messageEl.textContent = 'You repaid your loan!';
-    } else if (loan === 0) {
-        messageEl.textContent = 'You have no loan to repay.';
+    if (loan !== 0) {
+        if (money >= Math.abs(loan)) {
+            money -= Math.abs(loan);
+            loan = 0;
+            messageEl.textContent = 'You repaid your loan!';
+        } else {
+            loan -= money;
+            money = 0;
+            messageEl.textContent = 'You repaid part of your loan, but still have debt.';
+        }
     } else {
-        messageEl.textContent = 'You need more money to repay your loan.';
+        messageEl.textContent = 'You have no loan to repay.';
     }
     updateDisplay();
 }
@@ -173,11 +222,6 @@ function resetGame() {
         messageEl.textContent = 'Welcome back to your fresh farm!';
         updateDisplay();
     }
-}
-
-// Placeholder for house decoration function
-function openDecorationModal() {
-    alert('House decoration feature coming soon!');
 }
 
 // Initialize Game
